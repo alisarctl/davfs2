@@ -43,7 +43,7 @@ DAV_CHECK_NEON
 # Checks for header files.
 AC_HEADER_DIRENT
 AC_HEADER_STDC
-AC_CHECK_HEADERS([fcntl.h iconv.h libintl.h langinfo.h limits.h locale.h mntent.h stddef.h stdint.h stdlib.h string.h sys/file.h sys/mount.h sys/time.h syslog.h termios.h unistd.h utime.h])
+AC_CHECK_HEADERS([error.h fcntl.h iconv.h libintl.h langinfo.h limits.h locale.h mntent.h stddef.h stdint.h stdlib.h string.h sys/file.h sys/mount.h sys/time.h sys/select.h sys/types.h syslog.h termios.h unistd.h utime.h fstab.h paths.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -79,7 +79,7 @@ AC_FUNC_SELECT_ARGTYPES
 AC_FUNC_STRFTIME
 AC_FUNC_STAT
 AC_FUNC_UTIME_NULL
-AC_CHECK_FUNCS([endpwent ftruncate getmntent iconv memset mkdir nl_langinfo rpmatch select setlocale strcasecmp strchr strdup strerror strpbrk strrchr strstr strtol strtoull utime])
+AC_CHECK_FUNCS([endpwent ftruncate getmntent memset mkdir nl_langinfo rpmatch select setlocale strcasecmp strchr strdup strerror strpbrk strrchr strstr strtol strtoull utime canonicalize_file_name fopencookie])
 
 # Misc.
 DAV_DEFAULTS
