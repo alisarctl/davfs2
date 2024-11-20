@@ -45,6 +45,10 @@
 #include <unistd.h>
 #endif
 
+#ifdef HAVE_SYS_SELECT_H
+#include <sys/select.h>
+#endif
+
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif

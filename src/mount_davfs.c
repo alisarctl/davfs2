@@ -71,11 +71,17 @@
 #include <sys/types.h>
 #endif
 
+#ifdef HAVE_PATHS_H
+#include <paths.h>
+#endif
+
 #ifndef __linux__
 #include <sys/sysctl.h>
 #endif
 
+#ifdef HAVE_FSTAB_H
 #include <fstab.h>
+#endif
 
 #include <ne_string.h>
 #include <ne_uri.h>
@@ -101,6 +107,7 @@
 #define VFS_USERMOUNT "vfs.usermount"
 #endif
 
+
 /* Private global variables */
 /*==========================*/
 
@@ -113,7 +120,17 @@ static char *mpoint;
 #ifdef __linux__
 /* The file that holds information about mounted filesystems
    (/proc/mounts or /etc/mtab) */
+
 static char *mounts;
+
+#ifndef _PATH_MOUNTED
+# define _PATH_MOUNTED "/proc/mounts"
+#endif
+
+#endif /* __linux__ */
+
+#ifndef _PATH_FSTAB
+# define _PATH_FSTAB "/etc/fstab"
 #endif
 
 /* The PID file */
@@ -664,7 +681,12 @@ static void
 check_fstab(const dav_args *args)
 {
     dav_args *n_args;
+#ifdef HAVE_FSTAB_H
     struct fstab *ft;
+#else
+    FILE *fstab;
+    struct mntent *ft;
+#endif
 
 #ifdef __FreeBSD__
     int status;
@@ -681,12 +703,16 @@ check_fstab(const dav_args *args)
     }
 #endif
 
+    n_args = new_args();
+    n_args->mopts = DAV_USER_MOPTS;
+
+#ifdef HAVE_FSTAB_H
     if (setfsent() == 0)
         ERR(_("can't open file %s"), _PATH_FSTAB);
 
     while ((ft = getfsent()) != NULL) {
         if (ft->fs_file) {
-            char *mp = mcanonicalize_file_name(ft->fs_file);
+            char *mp = canonicalize_file_name(ft->fs_file);
             if (mp) {
                 if (strcmp(mp, mpoint) == 0) {
                     free(mp);
@@ -697,12 +723,33 @@ check_fstab(const dav_args *args)
         }
     }
     (void) endfsent();
+#else
+    fstab = setmntent(_PATH_MNTTAB, "r");
+    if (!fstab)
+        ERR(_("can't open file %s"), _PATH_MNTTAB);
+    ft = getmntent(fstab);
+    while (ft) {
+        if (ft->mnt_dir) {
+            char *mp = canonicalize_file_name(ft->mnt_dir);
+            if (mp) {
+                if (strcmp(mp, mpoint) == 0) {
+                    free(mp);
+                    break;
+                }
+                free(mp);
+            }
+        }
+        ft = getmntent(fstab);
+    }
 
+    endmntent(fstab);
+#endif
 
     if (!ft)
         ERR(_("no entry for %s found in %s"), mpoint,
               _PATH_FSTAB);
 
+#ifdef HAVE_FSTAB_H
     if (strcmp(url, ft->fs_spec) != 0) {
         ERR(_("different URL in %s"), _PATH_FSTAB);
     }
@@ -710,12 +757,18 @@ check_fstab(const dav_args *args)
     if (!ft->fs_vfstype || strcmp(DAV_FS_TYPE, ft->fs_vfstype) != 0)
         ERR(_("different file system type in %s %s %s"), ft->fs_vfstype, DAV_FS_TYPE,
               _PATH_FSTAB);
-
-    n_args = new_args();
-    n_args->mopts = DAV_USER_MOPTS;
-
     if (ft->fs_mntops)
         get_options(n_args, ft->fs_mntops);
+#else
+    if (strcmp(url, ft->mnt_fsname) != 0) {
+        ERR(_("different URL in %s"), _PATH_MNTTAB);
+    }
+
+    if (!ft->mnt_type || strcmp(DAV_FS_TYPE, ft->mnt_type) != 0)
+        ERR(_("different file system type in %s"), _PATH_MNTTAB);
+    if (ft->mnt_opts)
+        get_options(n_args, ft->mnt_opts);
+#endif
 
     if (args->conf || n_args->conf) {
         if (!args->conf || !n_args->conf
@@ -967,7 +1020,7 @@ parse_commandline(int argc, char *argv[])
             url = ne_strdup(argv[i]);
         }
         i++;
-        mpoint = mcanonicalize_file_name(argv[i]);
+        mpoint = canonicalize_file_name(argv[i]);
         if (!mpoint)
             ERR(_("can't evaluate path of mount point %s"), mpoint);
         break;
@@ -2164,7 +2217,7 @@ read_config(dav_args *args, const char * filename, int system)
             if (*parmv[0] != '[' || *(parmv[0] + strlen(parmv[0]) - 1) != ']')
                 ERR_AT_LINE(filename, lineno, _("malformed line"));
             *(parmv[0] + strlen(parmv[0]) - 1) = '\0';
-            char *mp = mcanonicalize_file_name(parmv[0] + 1);
+            char *mp = canonicalize_file_name(parmv[0] + 1);
             if (mp) {
                 applies = (strcmp(mp, mpoint) == 0);
                 free(mp);
@@ -2414,7 +2467,7 @@ read_secrets(dav_args *args, const char *filename)
             if (scheme && !port)
                 port = ne_uri_defaultport(scheme);
 
-            char *mp = mcanonicalize_file_name(parmv[0]);
+            char *mp = canonicalize_file_name(parmv[0]);
 
             char *ccert = NULL;
             if (args->clicert) {
