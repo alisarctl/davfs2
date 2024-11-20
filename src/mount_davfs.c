@@ -386,7 +386,8 @@ main(int argc, char *argv[])
 char *
 dav_user_input_hidden(const char *prompt)
 {
-    printf("  %s ", prompt);
+    fprintf(stdout, "  %s ", prompt);
+    fflush(stdout);
 
     struct termios old;
     if (tcgetattr(fileno(stdin), &old) != 0)
@@ -723,6 +724,7 @@ check_fstab(const dav_args *args)
         }
     }
     (void) endfsent();
+
 #else
     fstab = setmntent(_PATH_MNTTAB, "r");
     if (!fstab)
@@ -2691,7 +2693,8 @@ usage(void)
 static char *
 user_input(const char *prompt)
 {
-    printf("  %s ", prompt);
+    fprintf(stdout, "  %s ", prompt);
+    fflush(stdout);
     char *line = NULL;
     size_t n = 0;
     ssize_t len = getline(&line, &n, stdin);
