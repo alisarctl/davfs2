@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <limits.h>
 #include <string.h>
 #include <stdio.h>
 #include <locale.h>
@@ -54,7 +55,11 @@
    }\
 }
 
-#ifdef __FreeBSD__
+#ifdef HAVE_ERROR_H
+#include <error.h>
+#define ERR_AT_LINE(filename, lineno, fmt, ...) \
+    error_at_line(EXIT_FAILURE, 0, filename, lineno, fmt, ## __VA_ARGS__);
+#else
 #define ERR_AT_LINE(filename, lineno, fmt, ...) {\
     fprintf(stderr, "%s:%d :", filename, lineno); \
     if (errno != 0) \
@@ -66,19 +71,18 @@
 }
 #endif
 
-#ifdef __linux__
-#include <error.h>
-#define ERR_AT_LINE(filename, lineno, fmt, ...) \
-    error_at_line(EXIT_FAILURE, 0, filename, lineno, fmt, ## __VA_ARGS__);
-#endif
+#ifndef HAVE_CANONICALIZE_FILE_NAME
+static inline char * canonicalize_file_name(const char *path)
+{
+	char buf[PATH_MAX] = { };
 
-#ifdef __FreeBSD__
-#define mcanonicalize_file_name(path) \
-    realpath(path, NULL)
-#endif
+	snprintf(buf, sizeof(buf) - 1, "%s", path);
 
-#ifdef __linux__
-#define mcanonicalize_file_name canonicalize_file_name
+	if (!realpath(path, buf))
+		return NULL;
+
+	return strdup(buf);
+}
 #endif
 
 #endif /* __DAVFS_UTIL_H */
