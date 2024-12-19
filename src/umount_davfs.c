@@ -123,7 +123,7 @@ main(int argc, char *argv[])
     if (optind < (argc - 1))
         ERR(_("too many arguments"));
 
-    char *mpoint = mcanonicalize_file_name(argv[optind]);
+    char *mpoint = canonicalize_file_name(argv[optind]);
 
     char *umount_command = NULL;
     if (mpoint) {
