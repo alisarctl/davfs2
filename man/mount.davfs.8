@@ -472,10 +472,10 @@ line arguments; especially relevant in the context of CI runners.
 .TP
 .B https_proxy http_proxy all_proxy
 If no proxy is defined in the configuration file the value is taken from
-this environment variables. The proxy may be given with or without scheme
-and with or without port
+this environment variables. The proxy must be given with scheme and with or
+without port.
 .br
-http_proxy=[http://]foo.bar[:3218]
+http_proxy=http://foo.bar[:3218]
 .br
 Only used when the mounting user is root.
 

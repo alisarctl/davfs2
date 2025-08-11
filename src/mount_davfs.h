@@ -25,6 +25,14 @@
 /* Data Types */
 /*============*/
 
+/* This enum lists the supported proxy types */
+typedef enum dav_proxy_type {
+    dav_proxy_type_http,
+    dav_proxy_type_socks4,
+    dav_proxy_type_socks4a,
+    dav_proxy_type_socks5
+} dav_proxy_type;
+
 /* This data structure holds almost everything davfs gathers while reading and
    checking command line and configuration files. (See comment for data origin;
    highest precedence first.)
@@ -61,11 +69,12 @@ typedef struct {
     char *password;           /* User secrets file, system secrets file */
     char *clicert;            /* User config file, system config file */
     char *clicert_pw;         /* User secrets file, system secrets file */
-    char *p_host;             /* User config file, sys conf f., environment */
-    int p_port;               /* User config file, sys conf f., environment */
+    char *p_host;             /* System config file, environment */
+    int p_port;               /* System config file, environment */
+    dav_proxy_type p_type;    /* System config file, environment */
     char *p_user;             /* User secrets file, system secrets file */
     char *p_passwd;           /* User secrets file, system secrets file */
-    int useproxy;             /* User config file, sys conf f., command line */
+    int useproxy;             /* System config file, command line */
     int askauth;              /* User config file, sys conf f., command line */
     int locks;                /* User config file, sys conf f., command line */
     char * lock_owner;        /* User config file, system config file */

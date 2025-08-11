@@ -143,6 +143,11 @@
    variable. */
 #define DAV_DEFAULT_PROXY_PORT 8080
 
+/* The default proxy type.
+   May be overridden by system config file, user config file or environment
+   variable. */
+#define DAV_DEFAULT_PROXY_TYPE dav_proxy_type_http
+
 /* Whether to use a proxy if one is specified.
    May be overridden by command line or fstab. */
 #define DAV_USE_PROXY 1

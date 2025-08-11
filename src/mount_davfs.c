@@ -48,6 +48,7 @@
 #include <stdlib.h>
 #endif
 #include <string.h>
+#include <strings.h>
 #ifdef HAVE_SYSLOG_H
 #include <syslog.h>
 #endif
@@ -214,6 +215,9 @@ log_dbg_config(dav_args *args);
 
 static int
 parse_line(char *line, int parmc, char *parmv[]);
+
+static int
+parse_proxy_type(const char *s, dav_proxy_type *p_type);
 
 static void
 proxy_from_env(dav_args *args);
@@ -1850,6 +1854,7 @@ new_args(void)
 
     args->p_host = NULL;
     args->p_port = DAV_DEFAULT_PROXY_PORT;
+    args->p_type = DAV_DEFAULT_PROXY_TYPE;
     args->p_user = NULL;
     args->p_passwd = NULL;
     args->useproxy = DAV_USE_PROXY;
@@ -1958,6 +1963,8 @@ log_dbg_config(dav_args *args)
            "  p_host: %s", args->p_host);
     syslog(LOG_MAKEPRI(LOG_DAEMON, LOG_DEBUG),
            "  p_port: %i", args->p_port);
+    syslog(LOG_MAKEPRI(LOG_DAEMON, LOG_DEBUG),
+           "  p_type: %i", (int)args->p_type);
     syslog(LOG_MAKEPRI(LOG_DAEMON, LOG_DEBUG),
            "  useproxy: %i", args->useproxy);
     syslog(LOG_MAKEPRI(LOG_DAEMON, LOG_DEBUG),
@@ -2172,9 +2179,25 @@ parse_line(char *line, int parmc, char *parmv[])
     return parm_no;
 }
 
+/* Parses proxy type from string and returns 0 on success and -1 on error */
+static int
+parse_proxy_type(const char *s, dav_proxy_type *p_type)
+{
+    if (strcmp(s, "http") == 0)
+        *p_type = dav_proxy_type_http;
+    else if (strcmp(s, "socks4") == 0)
+        *p_type = dav_proxy_type_socks4;
+    else if (strcmp(s, "socks4a") == 0)
+        *p_type = dav_proxy_type_socks4a;
+    else if (strcmp(s, "socks5") == 0)
+        *p_type = dav_proxy_type_socks5;
+    else
+        return -1;
+    return 0;
+}
 
 /* Checks for a matching xxx_proxy environment variable, and if found
-   stores values in args->p_host and ars->p_port. */
+   stores values in args->p_host, args->p_port and args->p_type. */
 static void
 proxy_from_env(dav_args *args)
 {
@@ -2193,12 +2216,17 @@ proxy_from_env(dav_args *args)
     int port = 0;
     split_uri(&scheme, &host, &port, NULL, env);
 
-    if (scheme && strcmp(scheme, "http") == 0 && host) {
-        if (args->p_host) free(args->p_host);
-        args->p_host = host;
-        host = NULL;
-        if (port)
-            args->p_port = port;
+    if (scheme && host) {
+        if (parse_proxy_type(scheme, &args->p_type) == 0) {
+            if (args->p_host) free(args->p_host);
+            args->p_host = host;
+            host = NULL;
+            if (port)
+                args->p_port = port;
+        } else {
+            WARN(_("unsupported proxy scheme in environment variable: %s"),
+                scheme);
+        }
     }
 
     if (scheme) free(scheme);
@@ -2278,6 +2306,11 @@ read_config(dav_args *args, const char * filename, int system)
                 if (split_uri(NULL, &args->p_host, &args->p_port, NULL,
                               parmv[1]) != 0)
                     ERR_AT_LINE(filename, lineno, _("malformed line"));
+            } else if (system && strcmp(parmv[0], "proxy_type") == 0) {
+                if (parse_proxy_type(parmv[1], &args->p_type) != 0) {
+                    ERR_AT_LINE(filename, lineno,
+                        _("unsupported proxy type: %s"), parmv[1]);
+                }
             } else if (system && strcmp(parmv[0], "use_proxy") == 0) {
                 args->useproxy = arg_to_int(parmv[1], 10, parmv[0]);
             } else if (strcmp(parmv[0], "ask_auth") == 0) {
@@ -2576,8 +2609,8 @@ read_secrets(dav_args *args, const char *filename)
    not contain userinfo. It shall not contain a query or fragment component;
    they would be treated as part of path.
    The path component must *not* be %-encoded. scheme, if present in uri,
-   must be either http or https. If host is a IPv6 address, it must be enclosed
-   in square brackets.
+   must be either http, https, socks4, socks4a or socks5. If host is an IPv6
+   address, it must be enclosed in square brackets.
    The pointers to the components may be NULL. If they point to a non-NULL
    string, it is freed and then replaced by a newly allocated string.
    If no scheme is foud the default sheme "http" is returned.
@@ -2593,10 +2626,20 @@ split_uri(char **scheme, char **host, int *port,char **path, const char *uri)
     int po = 0;
     const char *ho = strstr(uri, "://");
     if (ho) {
-        if ((ho - uri) == 4 && strcasestr(uri, "http") == uri) {
+        if ((ho - uri) == 4 && strncasecmp(uri, "http", 4) == 0) {
             sch = "http";
-        } else if ((ho - uri) == 5 && strcasestr(uri, "https") == uri) {
+        } else if ((ho - uri) == 5 && strncasecmp(uri, "https", 5) == 0) {
             sch = "https";
+        } else if ((ho - uri) == 6) {
+            if (strncasecmp(uri, "socks5", 6) == 0) {
+                sch = "socks5";
+            } else if (strncasecmp(uri, "socks4", 6) == 0) {
+                sch = "socks4";
+            } else {
+                return -1;
+            }
+        } else if ((ho - uri) == 7 && strncasecmp(uri, "socks4a", 7) == 0) {
+            sch = "socks4a";
         } else {
             return -1;
         }

@@ -406,12 +406,41 @@ dav_init_webdav(const dav_args *args)
     ne_add_server_auth(session, NE_AUTH_ALL, auth, "server");
 
     if (args->useproxy && args->p_host) {
-        ne_session_proxy(session, args->p_host, args->p_port);
-        if (args->p_user)
-            p_username = ne_strdup(args->p_user);
-        if (args->p_passwd)
-            p_password = ne_strdup(args->p_passwd);
-        ne_add_proxy_auth(session, NE_AUTH_ALL, auth, "proxy");
+        if (args->p_type == dav_proxy_type_http) {
+            ne_session_proxy(session, args->p_host, args->p_port);
+            if (args->p_user)
+                p_username = ne_strdup(args->p_user);
+            if (args->p_passwd)
+                p_password = ne_strdup(args->p_passwd);
+            ne_add_proxy_auth(session, NE_AUTH_ALL, auth, "proxy");
+        } else {
+            enum ne_sock_sversion socks_ver = NE_SOCK_SOCKSV5;
+            switch (args->p_type) {
+            case dav_proxy_type_socks4:
+                if (!args->p_user) {
+                    ERR(_("proxy username not set,"
+                        " but is required for socks4"));
+                }
+                socks_ver = NE_SOCK_SOCKSV4;
+                break;
+            case dav_proxy_type_socks4a:
+                if (!args->p_user) {
+                    ERR(_("proxy username not set,"
+                        " but is required for socks4a"));
+                }
+                socks_ver = NE_SOCK_SOCKSV4A;
+                break;
+            case dav_proxy_type_socks5:
+                socks_ver = NE_SOCK_SOCKSV5;
+                break;
+            default:
+                ERR(_("invalid proxy type: %i"), (int)args->p_type);
+                break;
+            }
+
+            ne_session_socks_proxy(session, socks_ver,
+                args->p_host, args->p_port, args->p_user, args->p_passwd);
+        }
     }
 
 
