@@ -4,10 +4,8 @@ set -ex
 
 PACKAGES="
   libneon27-dev
-  autopoint
-  automake
-  autoconf
-  m4
+  meson
+  ninja-build
   po4a
 "
 
