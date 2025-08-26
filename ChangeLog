@@ -1,6 +1,11 @@
 ChangeLog for davfs2
 --------------------
 2025-08-26
+    * Release 1.8.0
+      Migrate build system to meson
+      Add support for musl
+
+2025-08-26
     * Release 1.7.2
       Add support to libneon 34, 35
       Increase buf read size to 64 (fixes read issue on linux 6.16)
