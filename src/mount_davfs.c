@@ -1849,6 +1849,7 @@ new_args(void)
     args->username = NULL;
     args->cl_username = NULL;
     args->password = NULL;
+    args->token = NULL;
     args->clicert = NULL;
     args->clicert_pw = NULL;
 
