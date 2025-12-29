@@ -48,7 +48,6 @@ cdata.set_quoted('PACKAGE_BUGREPORT', 'https://github.com/alisarctl/davfs2')
 
 system_headers = [
   'dirent.h',
-  'error.h',
   'fcntl.h',
   'iconv.h',
   'libintl.h',
@@ -101,6 +100,12 @@ if meson.version().version_compare('>= 1.3.0')
   endforeach
 
   cc.has_function('canonicalize_file_name')
+
+  if cc.has_header('error.h') and cc.has_function('error', prefix: '#include <error.h>')
+    # has error.h and -lerror (if on musl) is not required
+    cdata.set('HAVE_ERROR_H', 1)
+  endif
+
 endif
 
 configure_file(
