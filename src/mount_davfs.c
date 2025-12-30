@@ -2482,7 +2482,7 @@ read_secrets(dav_args *args, const char *filename)
         char *parmv[parmc];
         int count;
         count = parse_line(line, parmc, parmv);
-	if (count != 0 && count != 4 && count != 3 && count != 2)
+        if (count != 0 && count != 4 && count != 3 && count != 2)
             ERR_AT_LINE(filename, lineno, _("malformed line"));
 
         if (count == 2 || count == 3 || count == 4) {
@@ -2531,19 +2531,19 @@ read_secrets(dav_args *args, const char *filename)
                 if (count == 3 || count == 4)
                     args->password = ne_strdup(parmv[2]);
 
-		if (count == 4 && (0 == strcmp(ne_strdup(parmv[3]), "2FA"))) {
-		  args->token = user_input(_("2FA Token: "));
-		  size_t new_len = strlen(args->password) + strlen(args->token) + 2; // old pwd + ':' + token + \0
-		  char *new_pass = ne_calloc(new_len);
-		  if (args->password) {
-		    strcat(new_pass, args->password);
-		    strcat(new_pass, ":");
-		    strcat(new_pass, args->token);
-		    memset(args->password, '\0', strlen(args->password));
-                    free(args->password);
-		  }
-		  args->password = ne_strdup(new_pass);
-		}
+                if (count == 4 && (0 == strcmp(ne_strdup(parmv[3]), "2FA"))) {
+                    args->token = user_input(_("2FA Token: "));
+                    size_t new_len = strlen(args->password) + strlen(args->token) + 2; // old pwd + ':' + token + \0
+                    char *new_pass = ne_calloc(new_len);
+                    if (args->password) {
+                        strcat(new_pass, args->password);
+                        strcat(new_pass, ":");
+                        strcat(new_pass, args->token);
+                        memset(args->password, '\0', strlen(args->password));
+                        free(args->password);
+                    }
+                    args->password = ne_strdup(new_pass);
+                }
 
             } else if (strcmp(parmv[0], "proxy") == 0
                        || (host && args->p_host
