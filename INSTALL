@@ -42,7 +42,7 @@ the new versions.
 ----------------
 
 davfs2 uses the neon libraries for communication with the server.
-libneon (0.27, 0.28, 0.29, 0.30 or 0.31) must be installed. Your distribution
+libneon (0.27-0.36) must be installed. Your distribution
 will most likely provide a package.
 You will also need the neon header files. Distributions usually provide
 development packages for this.
@@ -55,21 +55,19 @@ or both. They may be loadable modules. Almost all Linux kernels support at
 least one of them.
 
 
-2.2 INSTALLATION FROM CVS SOURCES
+2.2 INSTALLATION FROM GIT SOURCES
 ---------------------------------
 
-To build davfs2 from the CVS sources you need recent versions of the some
+To build davfs2 from the GIT sources you need recent versions of the some
 build tools:
 
-- GNU Autoconf 2.69 or newer
-- GNU Automake 1.16.1 or newer
-- GNU gettext-tools 0.19.8.1 or newer
-- po4a 0.55 or newer
+- meson
+Change into the top level source directory
+$ cd /path/to/source/root
+... and run
+$ meson setup builddir && cd builddir
+$ meson compile
 
-Change into the top level source directory and run
-    $ ./bootstrap
-    This will add some necessary files, create the configure script and the
-    Makefile.in's, and build the translated man pages from the po-files.
 
 Proceed with Installation from Source Package.
 
