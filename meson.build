@@ -46,6 +46,20 @@ cdata.set_quoted('DAV_CERTS_DIR', davfs2_certdir)
 cdata.set_quoted('DAV_SECRETS', 'secrets')
 cdata.set_quoted('PACKAGE_BUGREPORT', 'https://github.com/alisarctl/davfs2')
 
+enable_nls = false
+
+if get_option('nls')
+  msgfmt = find_program('msgfmt', required: false)
+  if msgfmt.found()
+    enable_nls = true
+    localedir = join_paths(get_option('datadir'), 'locale')
+    cdata.set_quoted('LOCALEDIR', localedir)
+  endif
+endif
+
+set_variable('enable_nls', enable_nls)
+cdata.set('ENABLE_NLS', enable_nls)
+
 system_headers = [
   'dirent.h',
   'fcntl.h',
@@ -120,7 +134,9 @@ run_command('po4a', '--version', check : true)
 
 subdir('src')
 subdir('etc')
+if enable_nls
 subdir('po')
+endif
 if get_option('man') == true
 subdir('man')
 endif

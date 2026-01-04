@@ -5,4 +5,4 @@ option('statedir', type : 'string', value : '/var/run', description : 'state dir
 option('certdir', type : 'string', value : 'certs', description : 'Relative cert directory to sysconfdir')
 option('dav_user', type : 'string', value : 'davfs2', description : 'if invoked by root, mount.davfs runs as this user')
 option('dav_group', type : 'string', value : 'davfs2', description : 'the group, the mount.davfs daemon belongs to')
-
+option('nls', type : 'boolean', value : true, description : 'Enable Native Language Support (NLS)')

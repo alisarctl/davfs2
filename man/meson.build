@@ -5,5 +5,7 @@ install_man('davfs2.conf.5',
 
 run_command('po4a', 'po4a.conf', check:true)
 
-subdir('de')
-subdir('es')
+if get_variable('enable_nls')
+  subdir('de')
+  subdir('es')
+endif
