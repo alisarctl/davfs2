@@ -22,7 +22,6 @@ davfs2_sbindir = prefix / get_option('sbindir')
 davfs2_sysconfdir = prefix / get_option('sysconfdir') / meson.project_name()
 davfs2_localstatedir = get_option('statedir')
 davfs2_datadir = prefix / get_option('datadir')
-davfs2_docdir = davfs2_datadir / 'doc' / meson.project_name()
 davfs2_sharedir = prefix / davfs2_datadir / meson.project_name()
 
 davfs2_certdir = get_option('certdir')
@@ -154,10 +153,19 @@ doc_files = ['AUTHORS',
 ]
 
 if get_option('doc') == true
-davfs2_doc_files = install_data(
-  doc_files,
-  install_dir : davfs2_docdir
-)
+
+  docdir_option = get_option('docdir')
+
+  if docdir_option == ''
+    davfs2_docdir = davfs2_datadir / 'doc' / meson.project_name()
+  else
+    davfs2_docdir = docdir_option
+  endif
+
+  davfs2_doc_files = install_data(
+    doc_files,
+    install_dir : davfs2_docdir
+  )
 endif
 
 summary({

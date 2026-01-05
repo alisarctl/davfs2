@@ -1,5 +1,6 @@
 option('man', type : 'boolean', value : true, description : 'generate and install man pages')
 option('doc', type : 'boolean', value : true, description : 'install documentation')
+option('docdir', type : 'string', value : '', description : 'documentation dir')
 option('cachedir', type : 'string', value : '/var/cache/davfs2', description : 'cache dir')
 option('statedir', type : 'string', value : '/var/run', description : 'state dir')
 option('certdir', type : 'string', value : 'certs', description : 'Relative cert directory to sysconfdir')
