@@ -23,6 +23,7 @@ davfs2_sysconfdir = prefix / get_option('sysconfdir') / meson.project_name()
 davfs2_localstatedir = get_option('statedir')
 davfs2_datadir = prefix / get_option('datadir')
 davfs2_sharedir = prefix / davfs2_datadir / meson.project_name()
+mandir = prefix / get_option('mandir')
 
 davfs2_certdir = get_option('certdir')
 
