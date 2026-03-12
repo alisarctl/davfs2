@@ -60,6 +60,8 @@ endif
 set_variable('enable_nls', enable_nls)
 cdata.set('ENABLE_NLS', enable_nls)
 
+intl_dep = cc.find_library('intl', required: false)
+
 system_headers = [
   'dirent.h',
   'fcntl.h',

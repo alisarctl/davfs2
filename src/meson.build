@@ -13,7 +13,7 @@ umount_davfs_sources = [
 executable('mount.davfs',
   mount_davfs_sources,
   include_directories : config_inc,
-  dependencies : [ neon_dep ],
+  dependencies : [ neon_dep, intl_dep],
   install : true,
   install_dir : davfs2_sbindir
 )
@@ -21,7 +21,7 @@ executable('mount.davfs',
 executable('umount.davfs',
   umount_davfs_sources,
   include_directories : config_inc,
-  dependencies : [ neon_dep ],
+  dependencies : [ neon_dep, intl_dep],
   install : true,
   install_dir : davfs2_sbindir
 )
