@@ -22,7 +22,6 @@ davfs2_sbindir = prefix / get_option('sbindir')
 davfs2_sysconfdir = prefix / get_option('sysconfdir') / meson.project_name()
 davfs2_localstatedir = get_option('statedir')
 davfs2_datadir = prefix / get_option('datadir')
-davfs2_docdir = davfs2_datadir / 'doc' / meson.project_name()
 davfs2_sharedir = prefix / davfs2_datadir / meson.project_name()
 
 davfs2_certdir = get_option('certdir')
@@ -46,9 +45,22 @@ cdata.set_quoted('DAV_CERTS_DIR', davfs2_certdir)
 cdata.set_quoted('DAV_SECRETS', 'secrets')
 cdata.set_quoted('PACKAGE_BUGREPORT', 'https://github.com/alisarctl/davfs2')
 
+enable_nls = false
+
+if get_option('nls')
+  msgfmt = find_program('msgfmt', required: false)
+  if msgfmt.found()
+    enable_nls = true
+    localedir = join_paths(get_option('datadir'), 'locale')
+    cdata.set_quoted('LOCALEDIR', localedir)
+  endif
+endif
+
+set_variable('enable_nls', enable_nls)
+cdata.set('ENABLE_NLS', enable_nls)
+
 system_headers = [
   'dirent.h',
-  'error.h',
   'fcntl.h',
   'iconv.h',
   'libintl.h',
@@ -101,6 +113,12 @@ if meson.version().version_compare('>= 1.3.0')
   endforeach
 
   cc.has_function('canonicalize_file_name')
+
+  if cc.has_header('error.h') and cc.has_function('error', prefix: '#include <error.h>')
+    # has error.h and -lerror (if on musl) is not required
+    cdata.set('HAVE_ERROR_H', 1)
+  endif
+
 endif
 
 configure_file(
@@ -115,7 +133,9 @@ run_command('po4a', '--version', check : true)
 
 subdir('src')
 subdir('etc')
+if enable_nls
 subdir('po')
+endif
 if get_option('man') == true
 subdir('man')
 endif
@@ -133,10 +153,19 @@ doc_files = ['AUTHORS',
 ]
 
 if get_option('doc') == true
-davfs2_doc_files = install_data(
-  doc_files,
-  install_dir : davfs2_docdir
-)
+
+  docdir_option = get_option('docdir')
+
+  if docdir_option == ''
+    davfs2_docdir = davfs2_datadir / 'doc' / meson.project_name()
+  else
+    davfs2_docdir = docdir_option
+  endif
+
+  davfs2_doc_files = install_data(
+    doc_files,
+    install_dir : davfs2_docdir
+  )
 endif
 
 summary({
