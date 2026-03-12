@@ -1602,6 +1602,10 @@ delete_args(dav_args *args)
         memset(args->password, '\0', strlen(args->password));
         free(args->password);
     }
+    if (args->token) {
+        memset(args->token, '\0', strlen(args->token));
+        free(args->token);
+    }
     if (args->clicert)
         free(args->clicert);
     if (args->clicert_pw) {
@@ -1845,6 +1849,7 @@ new_args(void)
     args->username = NULL;
     args->cl_username = NULL;
     args->password = NULL;
+    args->token = NULL;
     args->clicert = NULL;
     args->clicert_pw = NULL;
 
@@ -2378,7 +2383,7 @@ read_config(dav_args *args, const char * filename, int system)
                 ERR_AT_LINE(filename, lineno, _("unknown option"));
             }
 
-        } else if (count < 0 || count > 3) {
+        } else if (count < 0 || count > 4) {
 
             ERR_AT_LINE(filename, lineno, _("malformed line"));
         }
@@ -2473,14 +2478,14 @@ read_secrets(dav_args *args, const char *filename)
     int lineno = 1;
 
     while (length > 0) {
-        int parmc = 3;
+        int parmc = 4;
         char *parmv[parmc];
         int count;
         count = parse_line(line, parmc, parmv);
-        if (count != 0 && count != 3 && count != 2)
+        if (count != 0 && count != 4 && count != 3 && count != 2)
             ERR_AT_LINE(filename, lineno, _("malformed line"));
 
-        if (count == 2 || count == 3) {
+        if (count == 2 || count == 3 || count == 4) {
 
             char *scheme = NULL;
             char *host = NULL;
@@ -2518,9 +2523,27 @@ read_secrets(dav_args *args, const char *filename)
                     memset(args->password, '\0', strlen(args->password));
                     free(args->password);
                 }
+                if (args->token) {
+                    memset(args->token, '\0', strlen(args->token));
+                    free(args->token);
+                }
                 args->username = ne_strdup(parmv[1]);
-                if (count == 3)
+                if (count == 3 || count == 4)
                     args->password = ne_strdup(parmv[2]);
+
+                if (count == 4 && (0 == strcmp(ne_strdup(parmv[3]), "2FA"))) {
+                    args->token = user_input(_("2FA Token: "));
+                    size_t new_len = strlen(args->password) + strlen(args->token) + 2; // old pwd + ':' + token + \0
+                    char *new_pass = ne_calloc(new_len);
+                    if (args->password) {
+                        strcat(new_pass, args->password);
+                        strcat(new_pass, ":");
+                        strcat(new_pass, args->token);
+                        memset(args->password, '\0', strlen(args->password));
+                        free(args->password);
+                    }
+                    args->password = ne_strdup(new_pass);
+                }
 
             } else if (strcmp(parmv[0], "proxy") == 0
                        || (host && args->p_host
