@@ -275,6 +275,8 @@ main(int argc, char *argv[])
 
     dav_init_cache(args, mpoint);
 
+    dav_tidy_cache();
+
     int dev = 0;
     if (args->buf_size && args->buf_size < 64) {
         WARN("WARNING: Buffer size is too small, increasing to 64");

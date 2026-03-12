@@ -2920,12 +2920,16 @@ parse_index(void)
 static void
 resize_cache(void)
 {
+    int free_more_cache = 0;
+    int last = 0;
+
     if (debug)
         syslog(LOG_MAKEPRI(LOG_DAEMON, LOG_DEBUG),
                "resize cache: %llu of %llu MiBytes used.",
                (cache_size + 0x80000) / 0x100000,
                (max_cache_size + 0x80000) / 0x100000);
 
+try_once_more:
     while (1) {
         dav_node *least_recent = NULL;
         cache_size = 0;
@@ -2934,8 +2938,9 @@ resize_cache(void)
             dav_node *node = table[i];
             while (node) {
                 if (is_cached(node)) {
-                    if (!is_open(node) && !is_dirty(node)
-                            && !is_created(node) && !is_backup(node)
+                    if (!is_open(node)
+                            && (free_more_cache || !is_dirty(node))
+                            && (free_more_cache || !is_backup(node))
                             && (!least_recent
                                 || node->atime < least_recent->atime))
                         least_recent = node;
@@ -2947,13 +2952,23 @@ resize_cache(void)
         if (cache_size < max_cache_size)
             break;
         if (!least_recent) {
-            syslog(LOG_MAKEPRI(LOG_DAEMON, LOG_ERR),
-                   _("open files exceed max cache size by %llu MiBytes"),
-                   (cache_size - max_cache_size + 0x80000) / 0x100000);
+            unsigned long long oversize;
+            free_more_cache = 1;
+
+            oversize = (cache_size - max_cache_size + 0x80000) / 0x100000;
+            if (oversize)
+                syslog(LOG_MAKEPRI(LOG_DAEMON, LOG_ERR),
+                       _("open files exceed max cache size by %llu MiBytes"),
+                       (cache_size - max_cache_size + 0x80000) / 0x100000);
             break;
         }
         delete_cache_file(least_recent);
         cache_size -= least_recent->size;
+    }
+
+    if (free_more_cache && !last) {
+        last = 1;
+        goto try_once_more;
     }
 
     if (debug)
