@@ -134,6 +134,17 @@ must be appended, separated by a colon. Examples: \fIfoo.bar:1704\fP or
 \fBOnly allowed in the system wide configuration file.\fR
 
 .TP
+.B proxy_type
+Type of the proxy. Supported values are: http, socks4, socks4a, socks5. When
+set to socks4 or socks4a, a username is required for authenticating with the
+proxy. The username (and password) can be provided interactively in the
+terminal or in the file specified in \fBsecrets\fR.
+.br
+Default: http
+.br
+\fBOnly allowed in the system wide configuration file.\fR
+
+.TP
 .B trust_ca_cert
 Name of a certificate file in PEM format. The name of the file may be
 given as absolute path or as file name only. In the latter case the
