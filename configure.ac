@@ -22,7 +22,7 @@
 
 
 AC_PREREQ(2.69)
-AC_INIT(davfs2, 1.7.2, https://github.com/alisarctl/davfs2)
+AC_INIT(davfs2, 1.7.3, https://github.com/alisarctl/davfs2)
 AC_CONFIG_SRCDIR([src/cache.c])
 AC_CONFIG_AUX_DIR([config])
 AM_INIT_AUTOMAKE([foreign])
@@ -85,6 +85,8 @@ DAV_DEFAULTS
 DAV_LFS
 DAV_LINGUAS([de])
 AC_DEFINE([_GNU_SOURCE], 1, [Define to enable GNU extensions])
+AC_CHECK_LIB([intl], [gettext], [INTLLIBS="-lintl"])
+AC_SUBST(INTLLIBS)
 
 AC_CANONICAL_HOST
 	AS_CASE([$host],

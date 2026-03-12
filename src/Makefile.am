@@ -47,7 +47,7 @@ DEFS = -DPROGRAM_NAME=\"mount.davfs\" \
        -DDAV_USER=\"$(dav_user)\" \
        -DDAV_GROUP=\"$(dav_group)\" \
        -D_FORTIFY_SOURCE=2 @DEFS@
-LIBS = $(NEON_LIBS) @LIBS@
+LIBS = $(NEON_LIBS) @LIBS@ $(INTLLIBS)
 
 if HOST_TYPE_FREEBSD
 LIBS += @LIBICONV@
