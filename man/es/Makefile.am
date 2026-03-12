@@ -40,12 +40,16 @@ edit = sed \
        -e 's|@USER[@]|$(dav_user)|g' \
        -e 's|@GROUP[@]|$(dav_group)|g'
 
-manual5_DATA = davfs2.conf.5
+manual5_DATA_in = davfs2.conf.5.in
 #manual8_DATA = mount.davfs.8.gz umount.davfs.8.gz
 
-#EXTRA_DIST = davfs2.conf.5 mount.davfs.8 umount.davfs.8 \
-#             davfs2.conf.5.po mount.davfs.8.po umount.davfs.8.po \
-#             davfs2.conf.5.translator mount.davfs.8.translator \
-#             umount.davfs.8.translator
-EXTRA_DIST = davfs2.conf.5 davfs2.conf.5.po
-CLEANFILES = $(manual5_DATA) $(manual8_DATA)
+EXTRA_DIST = $(manual5_DATA_in)
+
+manual5_DATA = $(manual5_DATA_in:.in=)
+
+DISTCLEANFILES = $(manual5_DATA)
+
+CLEANFILES = davfs2.conf.5.po
+
+%: %.in
+	$(edit) $< > $@
