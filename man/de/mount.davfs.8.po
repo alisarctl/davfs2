@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: davfs2 1.5.4\n"
-"POT-Creation-Date: 2024-11-20 14:47+0100\n"
+"POT-Creation-Date: 2026-03-12 14:41+0100\n"
 "PO-Revision-Date: 2021-01-28 17:42+0200\n"
 "Last-Translator: Werner Baumann <werner.baumann@onlinehome.de>\n"
 "Language-Team: \n"
@@ -38,27 +38,27 @@ msgstr "BESCHREIBUNG"
 
 # type: SH
 #. type: SH
-#: davfs2.conf.5:575 mount.davfs.8:556 umount.davfs.8:79
+#: davfs2.conf.5:575 mount.davfs.8:564 umount.davfs.8:79
 #, no-wrap
 msgid "AUTHORS"
 msgstr "AUTOREN"
 
 # type: SH
 #. type: SH
-#: davfs2.conf.5:581 mount.davfs.8:573 umount.davfs.8:84
+#: davfs2.conf.5:581 mount.davfs.8:581 umount.davfs.8:84
 #, no-wrap
 msgid "DAVFS2 HOME"
 msgstr "DAVFS2 HOME"
 
 # type: TH
 #. type: Plain text
-#: davfs2.conf.5:584 mount.davfs.8:576 umount.davfs.8:87
+#: davfs2.conf.5:584 mount.davfs.8:584 umount.davfs.8:87
 msgid "@PACKAGE_BUGREPORT@"
 msgstr "@PACKAGE_BUGREPORT@"
 
 # type: SH
 #. type: SH
-#: davfs2.conf.5:586 mount.davfs.8:578 umount.davfs.8:89
+#: davfs2.conf.5:586 mount.davfs.8:586 umount.davfs.8:89
 #, no-wrap
 msgid "SEE ALSO"
 msgstr "SIEHE AUCH"
@@ -819,8 +819,8 @@ msgid ""
 msgstr ""
 "In der I<fstab> müssen Leerzeichen durch den dreistelligen oktalen "
 "Zeichencode mit vorangestelltem Escape-Zeichen ersetzt werden. Also z.B.  "
-"I<http://foo.bar/path\\(rs040with\\(rs040spaces> anstelle von I<http://foo."
-"bar/path with spaces>."
+"I<http://foo.bar/path\\(rs040with\\(rs040spaces> anstelle von I<http://"
+"foo.bar/path with spaces>."
 
 # type: Plain text
 #. type: Plain text
@@ -922,8 +922,8 @@ msgstr ""
 #. type: Plain text
 #: mount.davfs.8:316
 msgid ""
-"You might have disabled locks in I<@SYS_CONF_DIR@/@CONFIGFILE@> or I<~/."
-"@PACKAGE@/@CONFIGFILE@>."
+"You might have disabled locks in I<@SYS_CONF_DIR@/@CONFIGFILE@> or "
+"I<~/.@PACKAGE@/@CONFIGFILE@>."
 msgstr ""
 "In I<@SYS_CONF_DIR@/@CONFIGFILE@> oder I<~/.@PACKAGE@/@CONFIGFILE@> könnten "
 "die Sperren deaktiviert sein."
@@ -1009,8 +1009,8 @@ msgstr ""
 "will). Solche gesperrten, nicht existierenden Dateien erscheinen im "
 "Dateisystem mit der Größe 0 und dem Änderungsdatum 1970-01-01. Wenn Sperren "
 "nicht ordnungsgemäß wieder frei gegeben werden, kann u.U. nicht mehr auf die "
-"Datei zugegriffen werden. Mit Hilfe von B<cadaver>(1) E<lt>I<http://www."
-"webdav.org/cadaver/>E<gt> können solche Sperren entfernt werden."
+"Datei zugegriffen werden. Mit Hilfe von B<cadaver>(1) E<lt>I<http://"
+"www.webdav.org/cadaver/>E<gt> können solche Sperren entfernt werden."
 
 # type: SH
 #. type: SH
@@ -1204,15 +1204,15 @@ msgstr "I<~/.@PACKAGE@/@CERTS_DIR@>"
 msgid ""
 "You may store trusted server certificates here, that can not be verified by "
 "use of the system wide CA-Certificates. This is useful when your server uses "
-"a selfmade certificate. You must configure the B<servercert> option in I<~/."
-"@PACKAGE@/@CONFIGFILE@> to use it. Certificates must be in PEM format."
+"a selfmade certificate. You must configure the B<servercert> option in "
+"I<~/.@PACKAGE@/@CONFIGFILE@> to use it. Certificates must be in PEM format."
 msgstr ""
 "Hier können vertrauenswürdige Server-Zertifikate gespeichert werden, die "
 "nicht auf normale Weise mit Hilfe der CA-Zertifikate des Systems überprüft "
 "werden können. Das ist dann sinnvoll, wenn der Server ein selbst gemachtes "
-"Zertifikat benutzt. Um ein solches Zertifikat zu benutzen, muss dies in I<~/."
-"@PACKAGE@/@CONFIGFILE@> konfiguriert werden. Die Zertifikate müssen im PEM-"
-"Format vorliegen."
+"Zertifikat benutzt. Um ein solches Zertifikat zu benutzen, muss dies in "
+"I<~/.@PACKAGE@/@CONFIGFILE@> konfiguriert werden. Die Zertifikate müssen im "
+"PEM-Format vorliegen."
 
 # type: TP
 #. type: TP
@@ -1333,16 +1333,32 @@ msgstr ""
 msgid "ENVIRONMENT"
 msgstr "UMGEBUNGSVARIABLEN"
 
-# type: TP
 #. type: TP
 #: mount.davfs.8:464
+#, no-wrap
+msgid "B<DAVFS_PASSWORD>"
+msgstr ""
+
+#. type: Plain text
+#: mount.davfs.8:471
+msgid ""
+"If set, this environment variable will be used as the password for WebDAV "
+"authentication if no password is specified via the command line option and "
+"in preference to anything found in secrets files. This allows for scripted "
+"mounting without storing passwords in files or exposing them in command line "
+"arguments; especially relevant in the context of CI runners."
+msgstr ""
+
+# type: TP
+#. type: TP
+#: mount.davfs.8:472
 #, no-wrap
 msgid "B<https_proxy http_proxy all_proxy>"
 msgstr "B<https_proxy http_proxy all_proxy>"
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:469
+#: mount.davfs.8:477
 msgid ""
 "If no proxy is defined in the configuration file the value is taken from "
 "this environment variables. The proxy may be given with or without scheme "
@@ -1354,26 +1370,26 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:471
+#: mount.davfs.8:479
 msgid "http_proxy=[http://]foo.bar[:3218]"
 msgstr "http_proxy=[http://]foo.bar[:3218]"
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:473 mount.davfs.8:481
+#: mount.davfs.8:481 mount.davfs.8:489
 msgid "Only used when the mounting user is root."
 msgstr "Wird nur benutzt, wenn der Benutzer root das Dateisystem einhängt."
 
 # type: TP
 #. type: TP
-#: mount.davfs.8:474
+#: mount.davfs.8:482
 #, no-wrap
 msgid "B<no_proxy>"
 msgstr "B<no_proxy>"
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:479
+#: mount.davfs.8:487
 msgid ""
 "A comma separated list of domain names that shall be accessed directly.  "
 "B<*> matches any domain name. A domain name starting with B<.> (period) "
@@ -1385,27 +1401,27 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:483
+#: mount.davfs.8:491
 msgid "Not applied when the proxy is defined in I<@SYS_CONF_DIR@>."
 msgstr ""
 "Wird nicht benutzt, wenn der Proxy in I<@SYS_CONF_DIR@> festgelegt wird."
 
 # type: SH
 #. type: SH
-#: mount.davfs.8:485
+#: mount.davfs.8:493
 #, no-wrap
 msgid "EXAMPLES"
 msgstr "BEISPIELE"
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:488
+#: mount.davfs.8:496
 msgid "B<Non root user (e.g. filomena):>"
 msgstr "B<Normaler Benutzer (z.B filomena):>"
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:491
+#: mount.davfs.8:499
 msgid "To allow an ordinary user to mount there must be an entry in I<fstab>"
 msgstr ""
 "Damit ein normaler Benutzer ein Dateisystem einhängen kann, ist ein Eintrag "
@@ -1413,13 +1429,13 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:493
+#: mount.davfs.8:501
 msgid "http://webdav.org/dav /media/dav davfs noauto,user 0 0"
 msgstr "http://webdav.org/dav /media/dav davfs noauto,user 0 0"
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:498
+#: mount.davfs.8:506
 msgid ""
 "If a proxy must be used this should be configured in I<@SYS_CONF_DIR@/"
 "@CONFIGFILE@>"
@@ -1429,32 +1445,32 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:500
+#: mount.davfs.8:508
 msgid "proxy proxy.mycompany.com:8080"
 msgstr "proxy proxy.mycompany.com:8080"
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:504
+#: mount.davfs.8:512
 msgid "Credentials are stored in I</home/filomena/.@PACKAGE@/@SECRETSFILE@>"
 msgstr ""
-"Die vertraulichen Zugangsdaten für den Server werden in I</home/filomena/."
-"@PACKAGE@/@SECRETSFILE@> gespeichert."
+"Die vertraulichen Zugangsdaten für den Server werden in I</home/"
+"filomena/.@PACKAGE@/@SECRETSFILE@> gespeichert."
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:506
+#: mount.davfs.8:514
 msgid "proxy.mycompany.com filomena \"my secret\""
 msgstr "proxy.mycompany.com filomena \"my secret\""
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:508
+#: mount.davfs.8:516
 msgid "/media/dav webdav-username password"
 msgstr "/media/dav webdav-username password"
 
 #. type: Plain text
-#: mount.davfs.8:514
+#: mount.davfs.8:522
 msgid ""
 "If you have two-factor authentication enabled and if you can provide the "
 "token together with the password in the form of password:token, then add the "
@@ -1464,7 +1480,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:516
+#: mount.davfs.8:524
 #, fuzzy
 #| msgid "/media/dav webdav-username password"
 msgid "/media/dav user-name \"p@ss\\e\"w0rd\" 2FA"
@@ -1472,37 +1488,37 @@ msgstr "/media/dav webdav-username password"
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:520
+#: mount.davfs.8:528
 msgid "Now the WebDAV resource may be mounted by user filomena invoking"
 msgstr "Jetzt kann Benutzerin filomena das Dateisystem einhängen durch "
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:522
+#: mount.davfs.8:530
 msgid "B<mount /media/dav>"
 msgstr "B<mount /media/dav>"
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:526
+#: mount.davfs.8:534
 msgid "and unmounted by user filomena invoking"
 msgstr "und dieselbe Benutzerin filomena kann es aushängen durch"
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:528
+#: mount.davfs.8:536
 msgid "B<umount /media/dav>"
 msgstr "B<umount /media/dav>"
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:532
+#: mount.davfs.8:540
 msgid "B<Root user only:>"
 msgstr "B<Nur Benutzer root:>"
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:538
+#: mount.davfs.8:546
 msgid ""
 "Mounts the resource I<https://asciigirl.com/webdav> at mount point I</mount/"
 "site>, encrypting all traffic with SSL. Credentials for I<http://webdav.org/"
@@ -1517,7 +1533,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:540
+#: mount.davfs.8:548
 msgid ""
 "B<mount -t davfs -o uid=otto,gid=users,mode=775 https://asciigirl.com/"
 "webdav /mount/site>"
@@ -1527,14 +1543,14 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:544
+#: mount.davfs.8:552
 msgid "Mounts the resource I<http://linux.org.ar/repos> at I</dav>."
 msgstr ""
 "Die WebDAV-Resource I<http://linux.org.ar/repos> wird auf I</dav> eingehängt."
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:546
+#: mount.davfs.8:554
 msgid ""
 "B<mount.davfs -o uid=otto,gid=users,mode=775 http://linux.org.ar/repos/ /dav>"
 msgstr ""
@@ -1542,20 +1558,20 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: mount.davfs.8:549 umount.davfs.8:74
+#: mount.davfs.8:557 umount.davfs.8:74
 #, no-wrap
 msgid "BUGS"
 msgstr "FEHLER"
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:552
+#: mount.davfs.8:560
 msgid "B<@PACKAGE@> does not support links."
 msgstr "B<@PACKAGE@> unterstützt keine Links."
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:554
+#: mount.davfs.8:562
 msgid "A B<@PACKAGE@> file system cannot be moved with I<mount --move>."
 msgstr ""
 "Ein B<@PACKAGE@>-Dateisystem kann nicht mit I<mount --move> verschoben "
@@ -1563,7 +1579,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:560
+#: mount.davfs.8:568
 msgid ""
 "This man page was written by Luciano Bello E<lt>luciano@linux.org.arE<gt> "
 "for Debian, for version 0.2.3 of davfs2."
@@ -1573,23 +1589,23 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:564
+#: mount.davfs.8:572
 msgid ""
-"It has been updated for this version by Werner Baumann E<lt>werner."
-"baumann@onlinhome.deE<gt>."
+"It has been updated for this version by Werner Baumann "
+"E<lt>werner.baumann@onlinhome.deE<gt>."
 msgstr ""
-"Für spätere Versionen wurde es von Werner Baumann E<lt>werner."
-"baumann@onlinehome.deE<gt> angepasst."
+"Für spätere Versionen wurde es von Werner Baumann "
+"E<lt>werner.baumann@onlinehome.deE<gt> angepasst."
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:567
+#: mount.davfs.8:575
 msgid "@PACKAGE@ is developed by Sung Kim E<lt>hunkim@gmail.comE<gt>."
 msgstr "@PACKAGE@ wurde von Sung Kim E<lt>hunkim@gmail.comE<gt> entwickelt."
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:571
+#: mount.davfs.8:579
 msgid ""
 "Version 1.0.0 (and later) of @PACKAGE@ is a complete rewrite by Werner "
 "Baumann."
@@ -1599,7 +1615,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: mount.davfs.8:584
+#: mount.davfs.8:592
 msgid ""
 "B<u@PROGRAM_NAME@>(8), B<@CONFIGFILE@>(5), B<mount>(8), B<umount>(8), "
 "B<fstab>(5)"

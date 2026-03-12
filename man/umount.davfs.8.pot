@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-10-24 10:51+0200\n"
+"POT-Creation-Date: 2026-03-12 14:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,24 +35,24 @@ msgid "DESCRIPTION"
 msgstr ""
 
 #. type: SH
-#: davfs2.conf.5:575 mount.davfs.8:548 umount.davfs.8:79
+#: davfs2.conf.5:575 mount.davfs.8:564 umount.davfs.8:79
 #, no-wrap
 msgid "AUTHORS"
 msgstr ""
 
 #. type: SH
-#: davfs2.conf.5:581 mount.davfs.8:565 umount.davfs.8:84
+#: davfs2.conf.5:581 mount.davfs.8:581 umount.davfs.8:84
 #, no-wrap
 msgid "DAVFS2 HOME"
 msgstr ""
 
 #. type: Plain text
-#: davfs2.conf.5:584 mount.davfs.8:568 umount.davfs.8:87
+#: davfs2.conf.5:584 mount.davfs.8:584 umount.davfs.8:87
 msgid "@PACKAGE_BUGREPORT@"
 msgstr ""
 
 #. type: SH
-#: davfs2.conf.5:586 mount.davfs.8:570 umount.davfs.8:89
+#: davfs2.conf.5:586 mount.davfs.8:586 umount.davfs.8:89
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
@@ -117,7 +117,7 @@ msgid "I<@SYS_RUN@>"
 msgstr ""
 
 #. type: SH
-#: mount.davfs.8:541 umount.davfs.8:74
+#: mount.davfs.8:557 umount.davfs.8:74
 #, no-wrap
 msgid "BUGS"
 msgstr ""
@@ -216,8 +216,8 @@ msgstr ""
 #. type: Plain text
 #: umount.davfs.8:82
 msgid ""
-"This man page was written by Werner Baumann E<lt>werner.baumann@onlinehome."
-"deE<gt>."
+"This man page was written by Werner Baumann "
+"E<lt>werner.baumann@onlinehome.deE<gt>."
 msgstr ""
 
 #. type: Plain text

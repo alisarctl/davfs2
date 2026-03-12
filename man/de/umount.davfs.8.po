@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: davfs2 1.4.0\n"
-"POT-Creation-Date: 2015-02-01 11:54+0100\n"
+"POT-Creation-Date: 2026-03-12 14:41+0100\n"
 "PO-Revision-Date: 2014-08-23 20:16+0200\n"
 "Last-Translator: Werner Baumann <werner.baumann@onlinehome.de>\n"
 "Language-Team: \n"
@@ -38,27 +38,27 @@ msgstr "BESCHREIBUNG"
 
 # type: SH
 #. type: SH
-#: davfs2.conf.5:568 mount.davfs.8:547 umount.davfs.8:79
+#: davfs2.conf.5:575 mount.davfs.8:564 umount.davfs.8:79
 #, no-wrap
 msgid "AUTHORS"
 msgstr "AUTOREN"
 
 # type: SH
 #. type: SH
-#: davfs2.conf.5:574 mount.davfs.8:564 umount.davfs.8:84
+#: davfs2.conf.5:581 mount.davfs.8:581 umount.davfs.8:84
 #, no-wrap
 msgid "DAVFS2 HOME"
 msgstr "DAVFS2 HOME"
 
 # type: TH
 #. type: Plain text
-#: davfs2.conf.5:577 mount.davfs.8:567 umount.davfs.8:87
+#: davfs2.conf.5:584 mount.davfs.8:584 umount.davfs.8:87
 msgid "@PACKAGE_BUGREPORT@"
 msgstr "@PACKAGE_BUGREPORT@"
 
 # type: SH
 #. type: SH
-#: davfs2.conf.5:579 mount.davfs.8:569 umount.davfs.8:89
+#: davfs2.conf.5:586 mount.davfs.8:586 umount.davfs.8:89
 #, no-wrap
 msgid "SEE ALSO"
 msgstr "SIEHE AUCH"
@@ -122,21 +122,21 @@ msgstr "Zeige einen Hilfe-Text an."
 
 # type: SH
 #. type: SH
-#: mount.davfs.8:376 umount.davfs.8:67
+#: mount.davfs.8:377 umount.davfs.8:67
 #, no-wrap
 msgid "FILES"
 msgstr "DATEIEN"
 
 # type: TP
 #. type: TP
-#: mount.davfs.8:437 umount.davfs.8:69
+#: mount.davfs.8:438 umount.davfs.8:69
 #, no-wrap
 msgid "I<@SYS_RUN@>"
 msgstr "I<@SYS_RUN@>"
 
 # type: SH
 #. type: SH
-#: mount.davfs.8:540 umount.davfs.8:74
+#: mount.davfs.8:557 umount.davfs.8:74
 #, no-wrap
 msgid "BUGS"
 msgstr "FEHLER"
@@ -271,8 +271,8 @@ msgstr "Derzeit keine bekannten."
 #. type: Plain text
 #: umount.davfs.8:82
 msgid ""
-"This man page was written by Werner Baumann E<lt>werner.baumann@onlinehome."
-"deE<gt>."
+"This man page was written by Werner Baumann "
+"E<lt>werner.baumann@onlinehome.deE<gt>."
 msgstr ""
 "Diese Handbuch hat Werner Baumann E<lt>werner.baumann@onlinehome.deE<gt> "
 "geschrieben."
