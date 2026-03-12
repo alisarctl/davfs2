@@ -42,9 +42,9 @@ make better use of the WebDAV protocol. Whether it really does, depends on the
 implementation. But if a free WebDAV enabled application is available, you
 might try it first.
 
-davfs2 can't (always) replace lodal disk space. Due to the nature of WebDAV
+davfs2 can't (always) replace local disk space. Due to the nature of WebDAV
 davfs2 can't directly redirect reading and writing to the WebDAV server. davfs2
-always needs local copies of all open files. So if you have not enough sidk
+always needs local copies of all open files. So if you have not enough disk
 space to hold these local copies, davfs2 will not help.
 
 # 2 SECURITY CONSIDERATIONS
