@@ -1,5 +1,11 @@
 ChangeLog for davfs2
 --------------------
+2026-03-12
+    * Release 1.7.3
+      Add musl support
+      Fix macro-substitution in manual pages
+      Remove hardcoded neon versions from configure.ac
+
 2025-08-26
     * Release 1.7.2
       Add support to libneon 34, 35
